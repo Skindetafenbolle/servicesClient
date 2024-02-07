@@ -14,6 +14,8 @@ interface User {
   status?: string;
   role?: string;
   hasRecord: boolean;
+  exampleWorks: string[];
+  dates: string[];
 }
 
 const Index: React.FC = () => {
@@ -38,20 +40,16 @@ const Index: React.FC = () => {
   }, []);
 
   const handleTagClick = (tag: string) => {
-    // Проверяем, активен ли уже данный тег
     const index = activeTags.indexOf(tag);
     if (index === -1) {
-      // Если тег не активен, добавляем его в массив активных тегов
       setActiveTags([...activeTags, tag]);
     } else {
-      // Если тег уже активен, удаляем его из массива активных тегов
       const newActiveTags = [...activeTags];
       newActiveTags.splice(index, 1);
       setActiveTags(newActiveTags);
     }
   };
 
-  // Фильтруем пользователей по активным тегам
   useEffect(() => {
     const filteredUsers = users.filter((user) =>
         activeTags.every((tag) => user.tags?.includes(tag))
@@ -87,7 +85,6 @@ const Index: React.FC = () => {
         <div>
           <h2>Тэги</h2>
           <div>
-            {/* Кнопки тегов */}
             {["Маникюр", "Массаж", "Ресницы", "Клининг"].map((tag) => (
                 <button
                     key={tag}
@@ -133,6 +130,30 @@ const Index: React.FC = () => {
                         {user.hasRecord && (
                             <p>Has Record: {user.hasRecord ? "Yes" : "No"}</p>
                         )}
+                        {user.exampleWorks.length > 0 && (
+                            <div>
+                              <h3>Example Works</h3>
+                              {user.exampleWorks.map((work, index) => (
+                                  <img
+                                      key={index}
+                                      src={work}
+                                      alt={`Example work ${index}`}
+                                      style={{width: "100px", height: "100px"}}
+                                  />
+                              ))}
+                            </div>
+                        )}
+                        {user.dates.length > 0 && (
+                            <div>
+                              <h3>Доступное время</h3>
+                              <select>
+                                {user.dates.map((date, index) => (
+                                    <option key={index}>{new Date(date).toLocaleString('en-US', { timeZone: 'UTC', hour12: false })}</option>
+                                ))}
+                              </select>
+                            </div>
+                        )}
+
                         <button onClick={() => handleSubmit(user.id)}>Запись</button>
                         <button onClick={() => router.push(`/profile/${user.id}`)}>
                           Профиль

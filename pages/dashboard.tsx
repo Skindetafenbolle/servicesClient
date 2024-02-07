@@ -15,6 +15,7 @@ interface User {
     role?: string;
     hasRecord: boolean;
     exampleWorks: string[];
+    dates: string[];
 }
 
 function Dashboard() {
@@ -84,6 +85,7 @@ function Dashboard() {
             console.error('An error occurred while deleting account:', error);
         }
     };
+
     return (
         <div>
             <div style={{display: 'flex', justifyContent: 'space-between', paddingRight: '20px'}}>
@@ -127,8 +129,9 @@ function Dashboard() {
                     <th style={{border: '1px solid black', padding: '8px'}}>Status</th>
                     <th style={{border: '1px solid black', padding: '8px'}}>Role</th>
                     <th style={{border: '1px solid black', padding: '8px'}}>Has Record</th>
-                    <th style={{border: '1px solid black', padding: '8px'}}>Actions</th>
+                    <th style={{border: '1px solid black', padding: '8px'}}>Dates</th>
                     <th style={{border: '1px solid black', padding: '8px'}}>Example Works</th>
+                    <th style={{border: '1px solid black', padding: '8px'}}>Actions</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -148,17 +151,11 @@ function Dashboard() {
                         <td style={{border: '1px solid black', padding: '8px'}}>{user.role}</td>
                         <td style={{border: '1px solid black', padding: '8px'}}>{user.hasRecord ? 'Yes' : 'No'}</td>
                         <td style={{border: '1px solid black', padding: '8px'}}>
-                            <button style={{fontWeight: 'bold', margin: '10px'}}
-                                    onClick={() => router.push(`/profile/${user.id}`)}>Profile
-                            </button>
-                            <br/>
-                            <button style={{fontWeight: 'bold', margin: '10px'}}
-                                    onClick={() => handleDeleteAccount(user.id)}>Delete user
-                            </button>
-                            <br/>
-                            <button style={{fontWeight: 'bold', margin: '10px'}}
-                                    onClick={() => router.push(`/settings/${user.id}`)}>Edit
-                            </button>
+                            <select>
+                                {user.dates.map((date, index) => (
+                                    <option key={index}>{new Date(date).toLocaleString('en-US', { timeZone: 'UTC', hour12: false })}</option>
+                                ))}
+                            </select>
                         </td>
                         <td style={{border: '1px solid black', padding: '8px'}}>
                             {user.exampleWorks.map((work, index) => (
@@ -168,6 +165,20 @@ function Dashboard() {
                                 </div>
                             ))}
                         </td>
+                        <td style={{border: '1px solid black', padding: '8px'}}>
+                            <button style={{fontWeight: 'bold', margin: '10px'}}
+                                    onClick={() => router.push(`/profile/${user.id}`)}>Profile
+                            </button>
+                            <br/>
+                            <button style={{fontWeight: 'bold', margin: '10px'}}
+                                    onClick={() => router.push(`/settings/${user.id}`)}>Edit
+                            </button>
+                            <br/>
+                            <button style={{fontWeight: 'bold', margin: '10px', color: 'red'}}
+                                    onClick={() => handleDeleteAccount(user.id)}>Delete user
+                            </button>
+                        </td>
+
                     </tr>
                 ))}
                 </tbody>

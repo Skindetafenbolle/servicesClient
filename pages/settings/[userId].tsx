@@ -1,6 +1,6 @@
-import React, { useState, useEffect, ChangeEvent } from 'react';
-import jwt, { JwtPayload } from "jsonwebtoken";
-import { useRouter } from 'next/router';
+import React, {ChangeEvent, FormEvent, useEffect, useState} from 'react';
+import jwt, {JwtPayload} from "jsonwebtoken";
+import {useRouter} from 'next/router';
 
 interface UserInfo {
     firstName: string;
@@ -13,6 +13,7 @@ interface UserInfo {
     workplace: string;
     status: string;
     exampleWorks: string;
+    dates: string[];
 }
 
 const ProfilePage: React.FC = () => {
@@ -26,13 +27,15 @@ const ProfilePage: React.FC = () => {
         services: '',
         workplace: '',
         status: '',
-        exampleWorks: ''
+        exampleWorks: '',
+        dates: [],
     });
 
     const router = useRouter();
     const { userId } = router.query;
 
     const [userRole, setUserRole] = useState<string | null>(null);
+    const [dates, setDates] = useState<string[]>(['']);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -56,16 +59,32 @@ const ProfilePage: React.FC = () => {
         }));
     };
 
+    const handleDateChange = (index: number, value: string) => {
+        const newDates = [...dates];
+        newDates[index] = value;
+        setDates(newDates);
+    };
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleAddDate = () => {
+        setDates([...dates, '']);
+    };
+
+    const handleRemoveDate = (index: number) => {
+        const newDates = [...dates];
+        newDates.splice(index, 1);
+        setDates(newDates);
+    };
+
+    const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
-        console.log(userInfo);
 
         const filteredUserInfo = Object.fromEntries(
             Object.entries(userInfo).filter(([key, value]) => {
                 return value !== '' && value !== null && value !== undefined;
             })
         );
+
+        filteredUserInfo['dates'] = dates.join(', ');
 
         try {
             const response = await fetch(`http://localhost:8080/api/settings/user/${userId}`, {
@@ -78,7 +97,7 @@ const ProfilePage: React.FC = () => {
 
             if (response.ok) {
                 console.log('Data saved successfully');
-                window.location.href = `/profile/${userId}`;
+                router.push(`/profile/${userId}`);
             } else {
                 console.log('Failed to save data');
             }
@@ -86,7 +105,6 @@ const ProfilePage: React.FC = () => {
             console.log('An error occurred while saving data:', error);
         }
     };
-
 
     const handleDeleteAccount = async () => {
         try {
@@ -101,7 +119,6 @@ const ProfilePage: React.FC = () => {
                 console.log('Account deleted successfully');
                 localStorage.removeItem('token');
                 router.push('/login');
-                router.reload();
             } else {
                 console.log('Failed to delete account');
             }
@@ -109,8 +126,6 @@ const ProfilePage: React.FC = () => {
             console.error('An error occurred while deleting account:', error);
         }
     };
-
-    console.log(userInfo);
 
     return (
         <div>
@@ -199,6 +214,31 @@ const ProfilePage: React.FC = () => {
                     </label>
                     <br/>
                     <label>
+                        <div>
+                            {dates.map((date, index) => (
+                                <div key={index}>
+                                    <label>
+                                        Date {index + 1}:
+                                        <input
+                                            type="datetime-local"
+                                            value={date}
+                                            onChange={(e) => handleDateChange(index, e.target.value)}
+                                        />
+                                    </label>
+                                    {index > 0 && (
+                                        <button type="button" onClick={() => handleRemoveDate(index)}>
+                                            Remove
+                                        </button>
+                                    )}
+                                </div>
+                            ))}
+                            <button type="button" onClick={handleAddDate}>
+                                Add Date
+                            </button>
+                        </div>
+                    </label>
+                    <br/>
+                    <label>
                         Example Works:
                         <input
                             type="text"
@@ -225,7 +265,7 @@ const ProfilePage: React.FC = () => {
                                 onChange={handleChange}
                             />
                         </label>
-                        <br />
+                        <br/>
                         <label>
                             Second Name:
                             <input
@@ -235,7 +275,7 @@ const ProfilePage: React.FC = () => {
                                 onChange={handleChange}
                             />
                         </label>
-                        <br />
+                        <br/>
                         <label>
                             Avatar:
                             <input
