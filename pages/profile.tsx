@@ -30,7 +30,7 @@ function Profile() {
     }, []);
 
     useEffect(() => {
-        fetch(`http://localhost:8080/api/user/${userId}`, {
+        fetch(`https://services-nig3.onrender.com/api/user/${userId}`, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('token')}`
             }

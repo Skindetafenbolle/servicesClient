@@ -28,7 +28,7 @@ function Dashboard() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch("http://localhost:8080/api/users");
+                const response = await fetch("https://services-nig3.onrender.com/api/users");
                 const data = await response.json();
                 setUsers(data);
             } catch (error) {
@@ -41,7 +41,7 @@ function Dashboard() {
     const sortedUsers = users.sort((a, b) => a.id - b.id);
 
     const handleRegistration = async () => {
-        const url = 'http://localhost:8080/api/auth/register';
+        const url = 'https://services-nig3.onrender.com/api/auth/register';
 
         fetch(url, {
             method: 'POST',
@@ -67,7 +67,7 @@ function Dashboard() {
 
     const handleDeleteAccount = async (userId: number) => {
         try {
-            const response = await fetch(`http://localhost:8080/api/user/deleteAccount/${userId}`, {
+            const response = await fetch(`https://services-nig3.onrender.com/api/user/deleteAccount/${userId}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',

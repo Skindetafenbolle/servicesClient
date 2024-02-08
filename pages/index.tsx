@@ -27,7 +27,7 @@ const Index: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/users");
+        const response = await fetch("https://services-nig3.onrender.com/api/users");
         const data = await response.json();
         setUsers(data);
         setFilteredUsers(data);
@@ -60,7 +60,7 @@ const Index: React.FC = () => {
   const handleSubmit = async (userId: number) => {
     try {
       const response = await fetch(
-          `http://localhost:8080/api/settings/user/${userId}/hasRecord`,
+          `https://services-nig3.onrender.com/api/settings/user/${userId}/hasRecord`,
           {
             method: "PUT",
             headers: {

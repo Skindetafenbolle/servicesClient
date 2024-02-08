@@ -8,7 +8,7 @@ const LoginComponent: React.FC = () => {
     const router = useRouter();
 
     const handleLogin = async () => {
-        const url = 'http://localhost:8080/api/auth/login';
+        const url = 'https://services-nig3.onrender.com/api/auth/login';
 
         fetch(url, {
             method: 'POST',

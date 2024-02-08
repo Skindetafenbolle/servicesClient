@@ -87,7 +87,7 @@ const ProfilePage: React.FC = () => {
         filteredUserInfo['dates'] = dates.join(', ');
 
         try {
-            const response = await fetch(`http://localhost:8080/api/settings/user/${userId}`, {
+            const response = await fetch(`https://services-nig3.onrender.com/api/settings/user/${userId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -108,7 +108,7 @@ const ProfilePage: React.FC = () => {
 
     const handleDeleteAccount = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/api/user/deleteAccount/${userId}`, {
+            const response = await fetch(`https://services-nig3.onrender.com/api/user/deleteAccount/${userId}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
