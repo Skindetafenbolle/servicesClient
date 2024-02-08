@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import userId from "@/pages/settings/[userId]";
+
 
 interface User {
   id: number;
@@ -18,16 +20,24 @@ interface User {
   dates: string[];
 }
 
+interface TimeSlot {
+    id: number;
+    date: string;
+    freeWindow: number;
+    userId: number;
+}
+
 const Index: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
   const [activeTags, setActiveTags] = useState<string[]>([]);
+  const [timeSlots, setTimeSlots] = useState<TimeSlot[]>([]);
   const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("https://services-nig3.onrender.com/api/users");
+        const response = await fetch(`http://localhost:8080/api/users`);
         const data = await response.json();
         setUsers(data);
         setFilteredUsers(data);
@@ -38,6 +48,29 @@ const Index: React.FC = () => {
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+    const fetchTimeSlots = async (users: any[]) => {
+      users.map(async (user) => {
+            try {
+              const response = await fetch(`http://localhost:8080/api/timeSlots/${user.id}`);
+              const data = await response.json();
+                setTimeSlots((prevTimeSlots) => {
+                    const newTimeSlots = data.filter((newSlot: { id: number; }) => (
+                        !prevTimeSlots.some((prevSlot) => prevSlot.id === newSlot.id)
+                    ));
+                    return [...prevTimeSlots, ...newTimeSlots];
+                });
+
+            } catch (error) {
+              console.error("Error fetching data:", error);
+            }
+          }
+        );
+    };
+
+    fetchTimeSlots(users);
+  }, [users]);
 
   const handleTagClick = (tag: string) => {
     const index = activeTags.indexOf(tag);
@@ -50,6 +83,9 @@ const Index: React.FC = () => {
     }
   };
 
+
+
+
   useEffect(() => {
     const filteredUsers = users.filter((user) =>
         activeTags.every((tag) => user.tags?.includes(tag))
@@ -60,7 +96,7 @@ const Index: React.FC = () => {
   const handleSubmit = async (userId: number) => {
     try {
       const response = await fetch(
-          `https://services-nig3.onrender.com/api/settings/user/${userId}/hasRecord`,
+          `http://localhost:8080/api/settings/user/${userId}/hasRecord`,
           {
             method: "PUT",
             headers: {
@@ -137,24 +173,21 @@ const Index: React.FC = () => {
                                   <img
                                       key={index}
                                       src={work}
+
                                       alt={`Example work ${index}`}
                                       style={{width: "100px", height: "100px"}}
                                   />
                               ))}
                             </div>
-                        )}
-                        {user.dates.length > 0 && (
-                            <div>
-                              <h3>Доступное время</h3>
-                              <select>
-                                {user.dates.map((date, index) => (
-                                    <option key={index}>{new Date(date).toLocaleString('en-US', { timeZone: 'UTC', hour12: false })}</option>
-                                ))}
-                              </select>
+                        )}{timeSlots.filter((slot) => slot.userId === user.id).map((slot) => (
+                            <div key={slot.id}>
+                              <p>Дата: {`${('0' + new Date(slot.date).getDate()).slice(-2)}-${('0' + (new Date(slot.date).getMonth() + 1)).slice(-2)}-${new Date(slot.date).getFullYear()}`}</p>
+                              <p>Свободное время: {slot.freeWindow}</p>
                             </div>
-                        )}
+                          ))}
 
-                        <button onClick={() => handleSubmit(user.id)}>Запись</button>
+
+                          <button onClick={() => handleSubmit(user.id)}>Запись</button>
                         <button onClick={() => router.push(`/profile/${user.id}`)}>
                           Профиль
                         </button>

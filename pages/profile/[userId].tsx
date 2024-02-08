@@ -23,11 +23,12 @@ export default function UserProfile() {
     const { userId } = router.query;
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
-
+    console.log(process.env);
+    console.log(process.env.URL_API);
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const response = await fetch(`https://services-nig3.onrender.com/api/user/${userId}`);
+                const response = await fetch(`http://localhost:8080/api/user/${userId}`);
                 if (!response.ok) {
                     router.push('/');
                     return;

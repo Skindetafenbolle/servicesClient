@@ -10,7 +10,7 @@ const RegistrationComponent: React.FC = () => {
     const router = useRouter();
 
     const handleRegistration = async () => {
-        const url = 'https://services-nig3.onrender.com/api/auth/register';
+        const url = `http://localhost:8080/api/auth/register`;
 
         fetch(url, {
             method: 'POST',
