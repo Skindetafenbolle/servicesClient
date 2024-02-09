@@ -14,6 +14,7 @@ interface UserInfo {
     status: string;
     exampleWorks: string;
     dates: string[];
+    description: string;
 }
 
 const ProfilePage: React.FC = () => {
@@ -29,6 +30,7 @@ const ProfilePage: React.FC = () => {
         status: '',
         exampleWorks: '',
         dates: [],
+        description:'',
     });
 
     const router = useRouter();
@@ -157,6 +159,16 @@ const ProfilePage: React.FC = () => {
                             type="text"
                             name="avatar"
                             value={userInfo.avatar || ''}
+                            onChange={handleChange}
+                        />
+                    </label>
+                    <br/>
+                    <label>
+                        Description:
+                        <input
+                            type="text"
+                            name="description"
+                            value={userInfo.description}
                             onChange={handleChange}
                         />
                     </label>
