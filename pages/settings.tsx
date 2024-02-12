@@ -103,96 +103,119 @@ const ProfilePage: React.FC = () => {
 
     if (userRole === 'admin') {
         return (
-            <div>
-                <form onSubmit={handleSubmit}>
-                <label>
-                    First Name:
-                    <input
-                        type="text"
-                        name="firstName"
-                        value={userInfo.firstName}
-                        onChange={handleChange}
-                    />
-                </label>
-                <br />
-                <label>
-                    Email:
-                    <input
-                        type="email"
-                        name="email"
-                        value={userInfo.email}
-                        onChange={handleChange}
-                    />
-                </label>
-                <br />
-                <label>
-                    Second Name:
-                    <input
-                        type="text"
-                        name="secondName"
-                        value={userInfo.secondName}
-                        onChange={handleChange}
-                    />
-                </label>
-                <br />
-                <label>
-                    Avatar:
-                    <input
-                        type="text"
-                        name="avatar"
-                        value={userInfo.avatar || ''} 
-                        onChange={handleChange}
-                    />
-                </label>
-                <br />
-                <label>
-                    Tags:
-                    <input
-                        type="text"
-                        name="tags"
-                        value={userInfo.tags}
-                        onChange={handleChange}
-                    />
-                </label>
-                <br />
-                <label>
-                    Services:
-                    <input
-                        type="text"
-                        name="services"
-                        value={userInfo.services}
-                        onChange={handleChange}
-                    />
-                </label>
-                <br />
-                <label>
-                    Workplace:
-                    <input
-                        type="text"
-                        name="workplace"
-                        value={userInfo.workplace}
-                        onChange={handleChange}
-                    />
-                </label>
-                <br />
-                <label>
-                    Status:
-                    <input
-                        type="text"
-                        name="status"
-                        value={userInfo.status}
-                        onChange={handleChange}
-                    />
-                </label>
-                <br />
-                <button type="submit">
-                    Save
+            <div className="max-w-md mx-auto my-8">
+                <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">
+                            First Name:
+                            <input
+                                type="text"
+                                name="firstName"
+                                value={userInfo.firstName}
+                                onChange={handleChange}
+                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                            />
+                        </label>
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">
+                            Email:
+                            <input
+                                type="email"
+                                name="email"
+                                value={userInfo.email}
+                                onChange={handleChange}
+                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                            />
+                        </label>
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">
+                            Second Name:
+                            <input
+                                type="text"
+                                name="secondName"
+                                value={userInfo.secondName}
+                                onChange={handleChange}
+                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                            />
+                        </label>
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">
+                            Avatar:
+                            <input
+                                type="text"
+                                name="avatar"
+                                value={userInfo.avatar || ''}
+                                onChange={handleChange}
+                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                            />
+                        </label>
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">
+                            Tags:
+                            <input
+                                type="text"
+                                name="tags"
+                                value={userInfo.tags}
+                                onChange={handleChange}
+                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                            />
+                        </label>
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">
+                            Services:
+                            <input
+                                type="text"
+                                name="services"
+                                value={userInfo.services}
+                                onChange={handleChange}
+                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                            />
+                        </label>
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">
+                            Workplace:
+                            <input
+                                type="text"
+                                name="workplace"
+                                value={userInfo.workplace}
+                                onChange={handleChange}
+                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                            />
+                        </label>
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">
+                            Status:
+                            <input
+                                type="text"
+                                name="status"
+                                value={userInfo.status}
+                                onChange={handleChange}
+                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                            />
+                        </label>
+                    </div>
+                    <button
+                        type="submit"
+                        className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    >
+                        Save
+                    </button>
+                </form>
+                <button
+                    onClick={handleDeleteAccount}
+                    className="mt-4 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                >
+                    Delete Account
                 </button>
-            </form>
-            <button onClick={handleDeleteAccount}>
-                Delete Account
-            </button>
             </div>
+
         );
     }
 
@@ -209,7 +232,7 @@ const ProfilePage: React.FC = () => {
                         onChange={handleChange}
                     />
                 </label>
-                <br />
+                <br/>
                 <label>
                     Second Name:
                     <input
@@ -219,7 +242,7 @@ const ProfilePage: React.FC = () => {
                         onChange={handleChange}
                     />
                 </label>
-                <br />
+                <br/>
                 <label>
                     Avatar:
                     <input
@@ -229,7 +252,7 @@ const ProfilePage: React.FC = () => {
                         onChange={handleChange}
                     />
                 </label>
-                <br />
+                <br/>
                 <button type="submit">
                     Save
                 </button>

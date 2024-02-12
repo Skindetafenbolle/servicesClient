@@ -203,28 +203,10 @@ const Index: React.FC = () => {
                                     </div>
 
                                     <div>
-                                    {Object.entries(groupedSlotsByDate).map(([dateKey, slots]) => (
-                                            <div key={dateKey}>
-                                                <div>
-                                                    Дата:{" "}
-                                                    {`${("0" + new Date(slots[0].date).getDate()).slice(
-                                                        -2
-                                                    )}-${(
-                                                        "0" + (new Date(slots[0].date).getMonth() + 1)
-                                                    ).slice(-2)}-${new Date(slots[0].date).getFullYear()}`}
-                                                </div>
-                                                <div>Свободное время:</div>
-                                                {slots.map((slot) => (
-                                                    <div key={slot.id}>
-                                                        <div>{slot.freeWindow}</div>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        ))}
+
                                     </div>
 
                                     <div>
-                                        <p>Примеры работ:</p>
                                         <div className="flex gap-2">
                                             {user.exampleWorks.map((work, index) => (
                                                 <div key={index} className="relative">

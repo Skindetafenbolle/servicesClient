@@ -130,184 +130,218 @@ const ProfilePage: React.FC = () => {
     };
 
     return (
-        <div>
+        <div className="max-w-lg mx-auto my-8 space-y-4">
             {userRole === 'admin' ? (
-                <form onSubmit={handleSubmit}>
-                    <label>
-                        First Name:
-                        <input
-                            type="text"
-                            name="firstName"
-                            value={userInfo.firstName}
-                            onChange={handleChange}
-                        />
-                    </label>
-                    <br/>
-                    <label>
-                        Second Name:
-                        <input
-                            type="text"
-                            name="secondName"
-                            value={userInfo.secondName}
-                            onChange={handleChange}
-                        />
-                    </label>
-                    <br/>
-                    <label>
-                        Avatar:
-                        <input
-                            type="text"
-                            name="avatar"
-                            value={userInfo.avatar || ''}
-                            onChange={handleChange}
-                        />
-                    </label>
-                    <br/>
-                    <label>
-                        Description:
-                        <input
-                            type="text"
-                            name="description"
-                            value={userInfo.description}
-                            onChange={handleChange}
-                        />
-                    </label>
-                    <br/>
-                    <label>
-                        Tags:
-                        <input
-                            type="text"
-                            name="tags"
-                            value={userInfo.tags}
-                            onChange={handleChange}
-                        />
-                    </label>
-                    <br/>
-                    <label>
-                        Services:
-                        <input
-                            type="text"
-                            name="services"
-                            value={userInfo.services}
-                            onChange={handleChange}
-                        />
-                    </label>
-                    <br/>
-                    <label>
-                        Workplace:
-                        <input
-                            type="text"
-                            name="workplace"
-                            value={userInfo.workplace}
-                            onChange={handleChange}
-                        />
-                    </label>
-                    <br/>
-                    <label>
-                        Status:
-                        <input
-                            type="text"
-                            name="status"
-                            value={userInfo.status}
-                            onChange={handleChange}
-                        />
-                    </label>
-                    <br/>
-                    <label>
-                        Role:
-                        <select
-                            name="role"
-                            value={userInfo.role}
-                            onChange={handleChange}
-                        >
-                            <option value="user">User</option>
-                            <option value="admin">Admin</option>
-                        </select>
-                    </label>
-                    <br/>
-                    <label>
-                        <div>
-                            {dates.map((date, index) => (
-                                <div key={index}>
-                                    <label>
-                                        Date {index + 1}:
-                                        <input
-                                            type="datetime-local"
-                                            value={date}
-                                            onChange={(e) => handleDateChange(index, e.target.value)}
-                                        />
-                                    </label>
-                                    {index > 0 && (
-                                        <button type="button" onClick={() => handleRemoveDate(index)}>
-                                            Remove
-                                        </button>
-                                    )}
-                                </div>
-                            ))}
-                            <button type="button" onClick={handleAddDate}>
-                                Add Date
-                            </button>
-                        </div>
-                    </label>
-                    <br/>
-                    <label>
-                        Example Works:
-                        <input
-                            type="text"
-                            name="exampleWorks"
-                            value={userInfo.exampleWorks}
-                            onChange={handleChange}
-                        />
-                    </label>
-                    <br/>
-                    <button type="submit">
-                        Save
-                    </button>
-                </form>
-            ) : (
-                <div>
-                    <h1>User Profile</h1>
-                    <form onSubmit={handleSubmit}>
-                        <label>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                    <div className="flex flex-col">
+                        <label className="font-semibold">
                             First Name:
                             <input
                                 type="text"
                                 name="firstName"
                                 value={userInfo.firstName}
                                 onChange={handleChange}
+                                className="mt-1 p-2 border border-gray-300 rounded"
                             />
                         </label>
-                        <br/>
-                        <label>
+                    </div>
+                    <div className="flex flex-col">
+                        <label className="font-semibold">
                             Second Name:
                             <input
                                 type="text"
                                 name="secondName"
                                 value={userInfo.secondName}
                                 onChange={handleChange}
+                                className="mt-1 p-2 border border-gray-300 rounded"
                             />
                         </label>
-                        <br/>
-                        <label>
+                    </div>
+                    <div className="flex flex-col">
+                        <label className="font-semibold">
                             Avatar:
                             <input
                                 type="text"
                                 name="avatar"
-                                value={userInfo.avatar}
+                                value={userInfo.avatar || ''}
                                 onChange={handleChange}
+                                className="mt-1 p-2 border border-gray-300 rounded"
                             />
                         </label>
-                        <br />
-                        <button type="submit">
+                    </div>
+                    <div className="flex flex-col">
+                        <label className="font-semibold">
+                            Description:
+                            <input
+                                type="text"
+                                name="description"
+                                value={userInfo.description}
+                                onChange={handleChange}
+                                className="mt-1 p-2 border border-gray-300 rounded"
+                            />
+                        </label>
+                    </div>
+                    <div className="flex flex-col">
+                        <label className="font-semibold">
+                            Tags:
+                            <input
+                                type="text"
+                                name="tags"
+                                value={userInfo.tags}
+                                onChange={handleChange}
+                                className="mt-1 p-2 border border-gray-300 rounded"
+                            />
+                        </label>
+                    </div>
+                    <div className="flex flex-col">
+                        <label className="font-semibold">
+                            Services:
+                            <input
+                                type="text"
+                                name="services"
+                                value={userInfo.services}
+                                onChange={handleChange}
+                                className="mt-1 p-2 border border-gray-300 rounded"
+                            />
+                        </label>
+                    </div>
+                    <div className="flex flex-col">
+                        <label className="font-semibold">
+                            Workplace:
+                            <input
+                                type="text"
+                                name="workplace"
+                                value={userInfo.workplace}
+                                onChange={handleChange}
+                                className="mt-1 p-2 border border-gray-300 rounded"
+                            />
+                        </label>
+                    </div>
+                    <div className="flex flex-col">
+                        <label className="font-semibold">
+                            Status:
+                            <input
+                                type="text"
+                                name="status"
+                                value={userInfo.status}
+                                onChange={handleChange}
+                                className="mt-1 p-2 border border-gray-300 rounded"
+                            />
+                        </label>
+                    </div>
+                    <div className="flex flex-col">
+                        <label className="font-semibold">
+                            Role:
+                            <select
+                                name="role"
+                                value={userInfo.role}
+                                onChange={handleChange}
+                                className="mt-1 p-2 border border-gray-300 rounded"
+                            >
+                                <option value="user">User</option>
+                                <option value="admin">Admin</option>
+                            </select>
+                        </label>
+                    </div>
+                    <div className="flex flex-col space-y-2">
+                        <label className="font-semibold">
+                            <div>
+                                {dates.map((date, index) => (
+                                    <div key={index} className="flex items-center space-x-2">
+                                        <label>
+                                            Date {index + 1}:
+                                            <input
+                                                type="datetime-local"
+                                                value={date}
+                                                onChange={(e) => handleDateChange(index, e.target.value)}
+                                                className="ml-2 p-1 border border-gray-300 rounded"
+                                            />
+                                        </label>
+                                        {index > 0 && (
+                                            <button
+                                                type="button"
+                                                onClick={() => handleRemoveDate(index)}
+                                                className="py-1 px-3 bg-red-500 text-white rounded hover:bg-red-700 transition"
+                                            >
+                                                Remove
+                                            </button>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+                        </label>
+                        <button
+                            type="button"
+                            onClick={handleAddDate}
+                            className="py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-700 transition"
+                        >
+                            Add Date
+                        </button>
+                    </div>
+                    <button
+                        type="submit"
+                        className="w-full py-2 px-4 bg-green-500 text-white font-semibold rounded hover:bg-green-700 transition"
+                    >
+                        Save
+                    </button>
+                </form>
+            ) : (
+                <div className="space-y-4">
+                    <h1 className="text-xl font-bold">User Profile</h1>
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                        <div className="flex flex-col">
+                            <label className="font-semibold">
+                                First Name:
+                                <input
+                                    type="text"
+                                    name="firstName"
+                                    value={userInfo.firstName}
+                                    onChange={handleChange}
+                                    className="mt-1 p-2 border border-gray-300 rounded"
+                                />
+                            </label>
+                        </div>
+                        <div className="flex flex-col">
+                            <label className="font-semibold">
+                                Second Name:
+                                <input
+                                    type="text"
+                                    name="secondName"
+                                    value={userInfo.secondName}
+                                    onChange={handleChange}
+                                    className="mt-1 p-2 border border-gray-300 rounded"
+                                />
+                            </label>
+                        </div>
+                        <div className="flex flex-col">
+                            <label className="font-semibold">
+                                Avatar:
+                                <input
+                                    type="text"
+                                    name="avatar"
+                                    value={userInfo.avatar}
+                                    onChange={handleChange}
+                                    className="mt-1 p-2 border border-gray-300 rounded"
+                                />
+                            </label>
+                        </div>
+                        <button
+                            type="submit"
+                            className="w-full py-2 px-4 bg-green-500 text-white font-semibold rounded hover:bg-green-700 transition"
+                        >
                             Save
                         </button>
                     </form>
                 </div>
             )}
-            <button onClick={handleDeleteAccount}>
+            <button
+                onClick={handleDeleteAccount}
+                className="w-full py-2 px-4 mt-4 bg-red-600 text-white font-semibold rounded hover:bg-red-800 transition"
+            >
                 Delete Account
             </button>
         </div>
+
     );
 };
 
