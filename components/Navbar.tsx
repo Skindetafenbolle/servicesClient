@@ -36,7 +36,7 @@ const Navbar = () => {
     };
 
     return (
-        <nav className="bg-white p-4">
+        <nav className="bg-white p-5">
             <div className="container mx-auto flex justify-between items-center">
                 <Link href="/" className="text-black font-bold text-xl">Services</Link>
                 <div className="flex gap-4">
