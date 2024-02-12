@@ -210,7 +210,12 @@ function Dashboard() {
                             <td className="border px-4 py-2">{user.services?.join(', ')}</td>
                             <td className="border px-4 py-2">{user.workplace}</td>
                             <td className="border px-4 py-2">{user.status}</td>
-                            <td className="border px-4 py-2">{user.role}</td>
+                            <td className="border px-4 py-2">
+                                  <span
+                                      className={`inline-block rounded-full px-3 py-1 text-sm font-semibold text-white ${user.role === 'admin' ? 'bg-red-500' : user.role === 'staff' ? 'bg-blue-500' : 'bg-green-500'}`}>
+                                    {user.role}
+                                  </span>
+                            </td>
                             <td className="border px-4 py-2">{user.hasRecord ? 'Yes' : 'No'}</td>
                             <td className="border px-4 py-2">
                                 <div>
