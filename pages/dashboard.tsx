@@ -16,13 +16,23 @@ interface User {
     hasRecord: boolean;
     exampleWorks: string[];
     dates: string[];
+    description: string;
 }
+
+interface TimeSlot {
+    id: number;
+    date: string;
+    freeWindow: number;
+    userId: number;
+}
+
 
 function Dashboard() {
     const [users, setUsers] = useState<User[]>([]);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const [timeSlots, setTimeSlots] = useState<TimeSlot[]>([]);
 
     const router = useRouter();
     useEffect(() => {
@@ -38,6 +48,28 @@ function Dashboard() {
 
         fetchData();
     }, []);
+
+    useEffect(() => {
+        const fetchTimeSlots = async (users: any[]) => {
+            users.map(async (user) => {
+                try {
+                    const response = await fetch(`http://localhost:8080/api/timeSlots/${user.id}`);
+                    const data = await response.json();
+                    setTimeSlots((prevTimeSlots) => {
+                        const newTimeSlots = data.filter((newSlot: { id: number; }) => (
+                            !prevTimeSlots.some((prevSlot) => prevSlot.id === newSlot.id)
+                        ));
+                        return [...prevTimeSlots, ...newTimeSlots];
+                    });
+
+                } catch (error) {
+                    console.error("Error fetching data:", error);
+                }
+            });
+        };
+
+        fetchTimeSlots(users);
+    }, [users]);
     const sortedUsers = users.sort((a, b) => a.id - b.id);
 
     const handleRegistration = async () => {
@@ -86,102 +118,154 @@ function Dashboard() {
         }
     };
 
+    // @ts-ignore
     return (
         <div>
-            <div style={{display: 'flex', justifyContent: 'space-between', paddingRight: '20px'}}>
+            <div className="flex justify-between items-center px-5">
                 <div>
-                    <h1>Dashboard Page</h1>
+                    <h1 className="text-xl font-bold">Админ панель</h1>
                 </div>
                 <div>
-                    <h2>
-                        <div>
-                            {error && <div>{error}</div>}
-                            <input
-                                autoComplete="false"
-                                type="email"
-                                value={email}
-                                onChange={e => setEmail(e.target.value)}
-                                placeholder="Email"
-                            />
-                            <input
-                                type="password"
-                                value={password}
-                                onChange={e => setPassword(e.target.value)}
-                                placeholder="Password"
-                                autoComplete="new-password"
-                            />
-                            <button onClick={handleRegistration}>Create new user</button>
-                        </div>
-                    </h2>
+                    <div className="space-y-4">
+                        {error && <div className="text-red-500">{error}</div>}
+                        <input
+                            className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mt-5"
+                            autoComplete="false"
+                            type="email"
+                            value={email}
+                            onChange={e => setEmail(e.target.value)}
+                            placeholder="Email"
+                        />
+                        <input
+                            className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            type="password"
+                            value={password}
+                            onChange={e => setPassword(e.target.value)}
+                            placeholder="Password"
+                            autoComplete="new-password"
+                        />
+                        <button
+                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                            onClick={handleRegistration}
+                        >
+                            Create new user
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            <table style={{borderCollapse: 'collapse', width: '100%'}}>
+            <table className="min-w-full divide-y divide-gray-200 mt-5">
                 <thead>
                 <tr>
-                    <th style={{border: '1px solid black', padding: '8px'}}>Email</th>
-                    <th style={{border: '1px solid black', padding: '8px'}}>First Name</th>
-                    <th style={{border: '1px solid black', padding: '8px'}}>Second Name</th>
-                    <th style={{border: '1px solid black', padding: '8px'}}>Avatar</th>
-                    <th style={{border: '1px solid black', padding: '8px'}}>Tags</th>
-                    <th style={{border: '1px solid black', padding: '8px'}}>Services</th>
-                    <th style={{border: '1px solid black', padding: '8px'}}>Workplace</th>
-                    <th style={{border: '1px solid black', padding: '8px'}}>Status</th>
-                    <th style={{border: '1px solid black', padding: '8px'}}>Role</th>
-                    <th style={{border: '1px solid black', padding: '8px'}}>Has Record</th>
-                    <th style={{border: '1px solid black', padding: '8px'}}>Dates</th>
-                    <th style={{border: '1px solid black', padding: '8px'}}>Example Works</th>
-                    <th style={{border: '1px solid black', padding: '8px'}}>Actions</th>
+                    <th className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">Email</th>
+                    <th className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">First
+                        Name
+                    </th>
+                    <th className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">Second
+                        Name
+                    </th>
+                    <th className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">Avatar</th>
+                    <th className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">Tags</th>
+                    <th className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">Services</th>
+                    <th className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">Workplace</th>
+                    <th className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">Status</th>
+                    <th className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">Role</th>
+                    <th className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">Has
+                        Record
+                    </th>
+                    <th className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">Dates</th>
+                    <th className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">Example
+                        Works
+                    </th>
+                    <th className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">Actions</th>
                 </tr>
                 </thead>
-                <tbody>
-                {sortedUsers.map((user) => (
-                    <tr key={user.id} style={{border: '1px solid black'}}>
-                        <td style={{border: '1px solid black', padding: '8px'}}>{user.email}</td>
-                        <td style={{border: '1px solid black', padding: '8px'}}>{user.firstName}</td>
-                        <td style={{border: '1px solid black', padding: '8px'}}>{user.secondName}</td>
-                        <td style={{border: '1px solid black', padding: '8px'}}>
-                            {user.avatar &&
-                                <img src={user.avatar} alt="Avatar" style={{width: '100px', height: '100px'}}/>}
-                        </td>
-                        <td style={{border: '1px solid black', padding: '8px'}}>{user.tags?.join(', ')}</td>
-                        <td style={{border: '1px solid black', padding: '8px'}}>{user.services?.join(', ')}</td>
-                        <td style={{border: '1px solid black', padding: '8px'}}>{user.workplace}</td>
-                        <td style={{border: '1px solid black', padding: '8px'}}>{user.status}</td>
-                        <td style={{border: '1px solid black', padding: '8px'}}>{user.role}</td>
-                        <td style={{border: '1px solid black', padding: '8px'}}>{user.hasRecord ? 'Yes' : 'No'}</td>
-                        <td style={{border: '1px solid black', padding: '8px'}}>
-                            <select>
-                                {user.dates.map((date, index) => (
-                                    <option key={index}>{new Date(date).toLocaleString('en-US', { timeZone: 'UTC', hour12: false })}</option>
-                                ))}
-                            </select>
-                        </td>
-                        <td style={{border: '1px solid black', padding: '8px'}}>
-                            {user.exampleWorks.map((work, index) => (
-                                <div key={index}>
-                                    <img src={work} alt={`Example work ${index}`}
-                                         style={{width: '100px', height: '100px'}}/>
-                                </div>
-                            ))}
-                        </td>
-                        <td style={{border: '1px solid black', padding: '8px'}}>
-                            <button style={{fontWeight: 'bold', margin: '10px'}}
-                                    onClick={() => router.push(`/profile/${user.id}`)}>Profile
-                            </button>
-                            <br/>
-                            <button style={{fontWeight: 'bold', margin: '10px'}}
-                                    onClick={() => router.push(`/settings/${user.id}`)}>Edit
-                            </button>
-                            <br/>
-                            <button style={{fontWeight: 'bold', margin: '10px', color: 'red'}}
-                                    onClick={() => handleDeleteAccount(user.id)}>Delete user
-                            </button>
-                        </td>
+                <tbody className="bg-white divide-y divide-gray-200">
+                {sortedUsers.map((user) => {
+                    const groupedSlotsByDate: { [key: string]: TimeSlot[] } = {};
+                    timeSlots
+                        .filter((slot) => slot.userId === user.id)
+                        .forEach((slot) => {
+                            const dateKey = new Date(slot.date).toDateString();
+                            if (!groupedSlotsByDate[dateKey]) {
+                                groupedSlotsByDate[dateKey] = [];
+                            }
+                            groupedSlotsByDate[dateKey].push(slot);
+                        });
 
-                    </tr>
-                ))}
+                    return (
+                        <tr key={user.id} className="border">
+                            <td className="border px-4 py-2">{user.email}</td>
+                            <td className="border px-4 py-2">{user.firstName}</td>
+                            <td className="border px-4 py-2">{user.secondName}</td>
+                            <td className="border px-4 py-2 text-center">
+                                <div className="inline-block">
+                                    {user.avatar && (
+                                        <img src={user.avatar} alt="Avatar"
+                                             className="w-24 h-24 object-cover rounded-full border-2 border-gray-300"/>
+                                    )}
+                                </div>
+                            </td>
+                            <td className="border px-4 py-2">{user.tags?.join(', ')}</td>
+                            <td className="border px-4 py-2">{user.services?.join(', ')}</td>
+                            <td className="border px-4 py-2">{user.workplace}</td>
+                            <td className="border px-4 py-2">{user.status}</td>
+                            <td className="border px-4 py-2">{user.role}</td>
+                            <td className="border px-4 py-2">{user.hasRecord ? 'Yes' : 'No'}</td>
+                            <td className="border px-4 py-2">
+                                <div>
+                                    {Object.entries(groupedSlotsByDate).map(([dateKey, slots]) => (
+                                        <div key={dateKey}>
+                                            <div>Дата: {" "}
+                                                {`${("0" + new Date(slots[0].date).getDate()).slice(-2)}-${("0" + (new Date(slots[0].date).getMonth() + 1)).slice(-2)}-${new Date(slots[0].date).getFullYear()}`}
+                                            </div>
+                                            <div>Свободное время:</div>
+                                            <select className="bg-gray-100 border border-gray-300 py-2 px-4 rounded-lg">
+                                                {slots.map((slot) => (
+                                                    <option key={slot.id}>{slot.freeWindow}</option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                    ))}
+                                </div>
+                            </td>
+                            <td className="border px-4 py-2">
+                                {user.exampleWorks.map((work, index) => (
+                                    <div key={index}>
+                                        <img src={work} alt={`Example work ${index}`}
+                                             className="w-24 h-24 object-cover"/>
+                                    </div>
+                                ))}
+                            </td>
+
+                            <td className="border px-4 py-2">
+                                <div className="flex flex-col space-y-2">
+                                    <button
+                                        className="font-bold py-2 px-4 rounded hover:bg-gray-200 focus:outline-none focus:shadow-outline transition ease-in-out duration-150 flex justify-center items-center min-w-[120px] border border-gray-300 hover:border-gray-400"
+                                        onClick={() => router.push(`/profile/${user.id}`)}
+                                    >
+                                        Profile
+                                    </button>
+                                    <button
+                                        className="font-bold py-2 px-4 rounded hover:bg-gray-200 focus:outline-none focus:shadow-outline transition ease-in-out duration-150 flex justify-center items-center min-w-[120px] border border-gray-300 hover:border-gray-400"
+                                        onClick={() => router.push(`/settings/${user.id}`)}
+                                    >
+                                        Edit
+                                    </button>
+                                    <button
+                                        className="font-bold py-2 px-4 rounded text-red-600 hover:bg-gray-200 focus:outline-none focus:shadow-outline transition ease-in-out duration-150 flex justify-center items-center min-w-[120px] border border-gray-300 hover:border-gray-400"
+                                        onClick={() => handleDeleteAccount(user.id)}
+                                    >
+                                        Delete user
+                                    </button>
+                                </div>
+                            </td>
+
+                        </tr>
+                    );
+                })}
                 </tbody>
+
             </table>
         </div>
     );

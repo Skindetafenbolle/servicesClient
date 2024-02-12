@@ -64,79 +64,42 @@ export default function UserProfile() {
     }
 
     return (
-        <div>
-            <h1>User Profile</h1>
-            <p>User ID: {userId}</p>
-            <div>
-                <div style={{fontWeight:'bolder'}}>Email: {user.email}</div>
-                {user.firstName && <div style={{fontWeight:'bolder'}}>FirstName: {user.firstName}</div>}
-                {user.secondName && <div style={{fontWeight:'bolder'}}>SecondName: {user.secondName}</div>}
-                {user.avatar && <img src={user.avatar} alt="avatar" style={{width: '100px', height: '100px'}}/>}
-
-                {user.tags && user.tags.length > 0 && (
-                    <div style={{fontWeight:'bolder'}}>
-                        Tags: {user.tags.join(', ')}
+        <div className="space-y-4">
+            <h1 className="text-2xl font-bold">User Profile</h1>
+            <div className="flex items-center space-x-4">
+                {user.avatar && (
+                    <img src={user.avatar} alt="Avatar" className="w-24 h-24 object-cover rounded-full"/>
+                )}
+                <div>
+                    <div className="text-xl font-bold">{user.firstName} {user.secondName}</div>
+                </div>
+            </div>
+            <div className="mt-4">
+                <p className="font-semibold">User ID: {userId}</p>
+                <div className="font-bold">
+                    <div>Email: {user.email}</div>
+                    {user.tags && user.tags.length > 0 && (
+                        <div>Tags: {user.tags.join(', ')}</div>
+                    )}
+                    {user.services && user.services.length > 0 && (
+                        <div>Services: {user.services.join(', ')}</div>
+                    )}
+                    {user.workplace && <div>Workplace: {user.workplace}</div>}
+                    {user.status && <div>Status: {user.status}</div>}
+                    {user.role && <div>Role: {user.role}</div>}
+                    {user.hasRecord && <div>{user.hasRecord ? 'Has Record' : 'No Record'}</div>}
+                </div>
+                <p className="font-bold mt-2">Пример работ:</p>
+                {user.exampleWorks.length > 0 && (
+                    <div className="border border-gray-300 p-2 flex flex-wrap gap-2">
+                        {user.exampleWorks.map((work, index) => (
+                            <img key={index} src={work} alt={`Example work ${index}`}
+                                 className="w-24 h-24 object-cover rounded"/>
+                        ))}
                     </div>
                 )}
-
-                {user.services && user.services.length > 0 && (
-                    <div>
-                        Services: {user.services.join(', ')}
-                    </div>
-                )}
-
-                {user.workplace && <div style={{fontWeight:'bolder'}}>Workplace: {user.workplace}</div>}
-                {user.status && <div style={{fontWeight:'bolder'}}>Status: {user.status}</div>}
-                {user.role && <div style={{fontWeight:'bolder'}}>Role: {user.role}</div>}
-                {user.hasRecord && <div style={{fontWeight:'bolder'}}>{user.hasRecord}</div>}
-                <p style={{fontWeight:'bolder'}} >Пример работ:</p>
-                {user.exampleWorks.length > 0 && <div style={{border: '1px solid black', padding: '8px', display: 'flex', flexWrap:'wrap'}}>
-
-                    {user.exampleWorks.map((work, index) => (
-                        <div key={index}>
-                            <img src={work} alt={`Example work ${index}`} style={{width: '100px', height: '100px'}}/>
-                        </div>
-                    ))}
-                </div>}
-                <table>
-                    <thead>
-                    <tr>
-                        <th></th>
-                        <th>{new Date().toLocaleDateString()}</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {Array.from({length: 9}, (_, index) => {
-                        const startTime = `${index.toString().padStart(2, '10')}:00`;
-                        const endTime = `${(index + 1).toString().padStart(2, '10')}:00`;
-                        return (
-                            <tr key={index}>
-                                <td>{`${startTime}-${endTime}`}</td>
-                                <td>{user.hasRecord ? 'Запись' : 'Записи нет'}</td>
-                            </tr>
-                        );
-                    })}
-                    </tbody>
-                    <thead>
-                    <tr>
-                        <th></th>
-                        <th>{new Date().toLocaleDateString()}</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {Array.from({length: 9}, (_, index) => {
-                        const startTime = `${index.toString().padStart(2, '10')}:00`;
-                        const endTime = `${(index + 1).toString().padStart(2, '10')}:00`;
-                        return (
-                            <tr key={index}>
-                                <td>{`${startTime}-${endTime}`}</td>
-                                <td>{user.hasRecord ? 'Запись' : 'Записи нет'}</td>
-                            </tr>
-                        );
-                    })}
-                    </tbody>
-                </table>
             </div>
         </div>
+
     );
 }
